@@ -1,0 +1,14 @@
+apiVersion: v2
+name: eksApp
+description: A Helm chart that deploys the External Key Service application.
+type: application
+version: "0.1.0"
+dependencies:
+- name: external-secrets
+  version: "0.18.1"
+  repository: https://charts.external-secrets.io
+  condition: external-secrets.enabled
+- name: reflector
+  version: "9.1.22"
+  repository: https://emberstack.github.io/helm-charts
+  condition: reflector.enabled

@@ -1,0 +1,9 @@
+dependencies:
+- name: external-secrets
+  repository: https://charts.external-secrets.io
+  version: 0.18.1
+- name: reflector
+  repository: https://emberstack.github.io/helm-charts
+  version: 9.1.22
+digest: sha256:b468cbb4f0d6eb88a96161cfa6fe308f23d3f0fbc43ef7297d1b61d83b0f679d
+generated: "2025-08-10T21:59:13.350939954+02:00"

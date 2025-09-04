@@ -1,0 +1,185 @@
+global:
+  # Supported by EKS
+  nodeSelector: {}
+  tolerations: []
+  topologySpreadConstraints: []
+  affinity: {}
+
+enabled: true
+
+# ClusterSecretStores to deploy. 
+# It is recommended to either use a scoped store and reflect secrets to other namespaces,
+# deploy scoped stores in each namespace that needs access to the secrets,
+# or use a scoped operator in combination with cluster stores. If cluster stores are
+# used without a scoped operator all namespaces will be able to access the store and 
+# reconsile secrets from it.
+# Cluster secret CRDs are not installed by default, as they are not needed for scoped stores.
+clusterStores:
+  enabled: false
+  stores: []
+#   # stores:
+#   # # Example cluster vault
+#   # - name: "example-cluster-vault"
+#   #   # Optional, defaults to true, set to false to disable
+#   #   enabled: true
+#   #   # Vaults server
+#   #   server: "https://vault.example.com"
+#   #   # The 1password service account token used to access the vault
+#   #   accessToken: "example-access-token"
+#   #   # Optional, the field in the secret that contains the access token
+#   #   accessTokenField: "token"
+
+# ScopedSecretStores to deploy.
+# Scoped stores are used to limit access to secrets to a specific namespace. This chart 
+# is configured to only deploy scoped stores in its own namespace, as a namespace should manage
+# its own secrets. The scoped store can be used to pull secrets and reflect them to another namespace
+# , usefull for provisioning secrets in a namespace that does not have access to its own scoped store.
+scopedStores:
+  enabled: false
+  stores: []
+  # stores:
+  # # Example scoped vault
+  # - name: "example-scoped-vault"
+  #   # Optional, defaults to true, set to false to disable
+  #   enabled: true
+  #   # Vaults server
+  #   server: "https://vault.example.com"
+  #   accessToken: "example-access-token"
+  #   # Optional, the field in the secret that contains the access token
+  #   accessTokenField: "token"
+
+# Secrets to pull from one of the created stores.
+# These secrets can be used for reflecting secrets to other namespaces or for creating
+# Kubernetes secrets in the namespace where this chart is deployed.
+externalSecrets:
+  enabled: true
+  allowReflection: false
+  secrets: []
+  # secrets:
+  # # Example secret to pull from a cluster store
+  # - name: "example-secret"
+  #   enabled: true
+  #   # The name of the cluster store to pull the secret from
+  #   storeName: "example-cluster-vault"
+  #   # The type of the secret store
+  #   storeType: "SecretStore"
+  #   # The name of the secret to pull from the store
+  #   remoteName: "example-secret-name"
+  #   fieldMappings:
+  #     # The key in the remote secret
+  #     - remoteField: "password"
+  #       # The key in the Kubernetes secret
+  #       secretKey: "password"
+  #     - remoteField: "username"
+  #       secretKey: "username"
+  #     # .... more mappings
+  #   # Reflection settings
+  #   reflection:
+  #     enabled: false
+  #     # Warning: if allowed namespaces is set to "", all namespaces will be able to reflect the secret.
+  #     # This is not recommended as it can lead to security issues.
+  #     allowedNamespaces: "example-namespace1,example-namespace2"
+  #     # If set to true, the secret will be reflected to all namespaces in the allowedNamespaces list.
+  #     # This means a new secret will be created in the target namespace
+  #     allowAutoReflection: false
+  #     autoReflectionNamespaces: "example-namespace1,example-namespace2"
+
+# Helm values passed to the external-secrets chart.
+# https://github.com/external-secrets/external-secrets/blob/main/deploy/charts/external-secrets/values.yaml
+external-secrets:
+  # Enable the operator
+  enabled: true
+  # Specifies whether an external secret operator deployment be created.
+  # If set to false, the operator will not be deployed and only the CRDs will be installed.
+  createOperator: true
+
+  # Annotations and labels to add to Pod
+  podAnnotations: {}
+  podLabels: {}
+
+  # If true, external-secrets will perform leader election between instances to ensure no more
+  # than one instance of external-secrets operates at a time.
+  leaderElect: false
+  replicaCount: 1
+
+  # Specifies the number of concurrent ExternalSecret Reconciles external-secret executes at
+  # a time.
+  concurrent: 1
+
+  # If set, install and upgrade CRDs through helm chart.
+  installCRDs: true
+  crds:
+    createClusterExternalSecret: false
+    createClusterSecretStore: false
+    createClusterGenerator: false
+    createClusterPushSecret: false
+    createPushSecret: true
+    annotations: {}
+    conversion:
+      # -- Conversion is disabled by default as we stopped supporting v1alpha1.
+      enabled: false
+
+  # If set external secrets are only reconciled in the
+  # provided namespace
+  scopedNamespace: ""
+  # Must be used with scopedNamespace. If true, create scoped RBAC roles under the scoped namespace
+  # and implicitly disable cluster stores and cluster external secrets
+  scopedRBAC: false
+  # If true the OpenShift finalizer permissions will be added to RBAC
+  openshiftFinalizers: false
+
+  # if true, the operator will process cluster external secret. Else, it will ignore them.
+  processClusterExternalSecret: false
+  # if true, the operator will process cluster push secret. Else, it will ignore them.
+  processClusterPushSecret: false
+  # if true, the operator will process cluster store. Else, it will ignore them.
+  processClusterStore: false
+  # if true, the operator will process push secret. Else, it will ignore them.
+  processPushSecret: true
+
+  serviceMonitor:
+    # -- Specifies whether to create a ServiceMonitor resource for collecting Prometheus metrics
+    enabled: false
+  grafanaDashboard:
+    # If true creates a Grafana dashboard.
+    enabled: false
+    sidecarLabel: "grafana_dashboard"
+    sidecarLabelValue: "true"
+
+  # Restrict Webhook TLS Ciphers
+  webhook:
+    extraArgs:
+      tls-ciphers: "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256"
+
+  bitwarden-sdk-server:
+    enabled: false
+
+  securityContext:
+    allowPrivilegeEscalation: false
+
+
+# Helm values passed to the reflector chart.
+# https://github.com/emberstack/kubernetes-reflector/blob/main/src/helm/reflector/values.yaml
+reflector: 
+  enabled: false
+  replicaCount: 1
+  cron:
+    enabled: false
+    schedule: "*/15 * * * *"
+    activeDeadlineSeconds: 600
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  topologySpreadConstraints: []
+  priorityClassName: ""
