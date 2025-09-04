@@ -25,7 +25,7 @@ clusterStores:
 #   #   # Vaults server
 #   #   server: "https://vault.example.com"
 #   #   # The 1password service account token used to access the vault
-#   #   accessToken: "example-access-token"
+#   #   accessToken: "main-connect-token"
 #   #   # Optional, the field in the secret that contains the access token
 #   #   accessTokenField: "token"
 
@@ -44,7 +44,7 @@ scopedStores:
   #   enabled: true
   #   # Vaults server
   #   server: "https://vault.example.com"
-  #   accessToken: "example-access-token"
+  #   accessToken: "main-connect-token"
   #   # Optional, the field in the secret that contains the access token
   #   accessTokenField: "token"
 
