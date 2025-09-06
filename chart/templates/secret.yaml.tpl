@@ -11,7 +11,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "2"
 spec:
   secretStoreRef:
-    kind: "SecretStore"
+    kind: {{ .storeType | default "SecretStore" | quote }}
     name: {{ .storeName | quote }}
   target:
     creationPolicy: Owner

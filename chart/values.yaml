@@ -113,7 +113,7 @@ external-secrets:
     createClusterSecretStore: false
     createClusterGenerator: false
     createClusterPushSecret: false
-    createPushSecret: true
+    createPushSecret: false
     annotations: {}
     conversion:
       # -- Conversion is disabled by default as we stopped supporting v1alpha1.
