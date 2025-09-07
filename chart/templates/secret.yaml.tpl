@@ -37,7 +37,7 @@ spec:
         property: {{ .remoteField | quote }}
         {{- end }}
         decodingStrategy: None
-        metadataPolicy: Fetch
+        metadataPolicy: None
     {{- end }}
 ---
 {{- end }}
