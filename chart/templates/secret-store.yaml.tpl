@@ -16,7 +16,7 @@ spec:
       version: "v2"
       auth:
         tokenSecretRef:
-          name: {{ .accessToken.secretName | quote }}
+          name: {{ .accessSecretName | quote }}
           {{- if .accessTokenField }}
           key: {{ .accessTokenField | quote }}
           {{- else }}

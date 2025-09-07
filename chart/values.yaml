@@ -45,7 +45,7 @@ scopedStores:
   #   # Vaults server
   #   server: "https://vault.example.com"
   #   path: "example/location"
-  #   accessToken: "main-connect-token"
+  #   accessSecretName: "main-connect-token"
   #   # Optional, the field in the secret that contains the access token
   #   accessTokenField: "secret-id"
 
