@@ -10,6 +10,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
+  refreshInterval: {{ .refreshInterval | default "1h" | quote }}
   secretStoreRef:
     kind: {{ .storeType | default "SecretStore" | quote }}
     name: {{ .storeName | quote }}
@@ -28,7 +29,9 @@ spec:
     - secretKey: {{ .secretKey | quote }}
       remoteRef:
         key: {{ $remoteSecretName | quote }}
+        {{- if .remoteField }}
         property: {{ .remoteField | quote }}
+        {{- end }}
         decodingStrategy: None
         metadataPolicy: Fetch
     {{- end }}
