@@ -15,14 +15,17 @@ spec:
       path: {{ .path | quote }}
       version: "v2"
       auth:
-        tokenSecretRef:
-          name: {{ .accessToken.secretName | quote }}
-          namespace: {{ $.Release.Namespace | quote }}
-          {{- if .accessTokenField }}
-          key: {{ .accessTokenField | quote }}
-          {{- else }}
-          key: token
-          {{- end }}
+        appRole:
+          path: {{ .appRolePath | default "approle" | quote }}
+          roleId: {{ .roleId | quote }}
+          secretRef:
+            name: {{ .accessSecretName | quote }}
+            {{ if .accessTokenField }}
+            key: {{ .accessTokenField | quote }}
+            {{ else }}
+            key: secret-id
+            {{ end }}
+            namespace: {{ $.Release.Namespace | quote }}
 {{- end }}
 {{- end }}
 {{- end }}{{- end }}

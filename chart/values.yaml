@@ -17,17 +17,18 @@ enabled: true
 clusterStores:
   enabled: false
   stores: []
-#   # stores:
-#   # # Example cluster vault
-#   # - name: "example-cluster-vault"
-#   #   # Optional, defaults to true, set to false to disable
-#   #   enabled: true
-#   #   # Vaults server
-#   #   server: "https://vault.example.com"
-#   #   # The 1password service account token used to access the vault
-#   #   accessToken: "main-connect-token"
-#   #   # Optional, the field in the secret that contains the access token
-#   #   accessTokenField: "token"
+  # stores:
+  # # Example cluster vault
+  # - name: "example-cluster-vault"
+  #   # Optional, defaults to true, set to false to disable
+  #   enabled: true
+  #   # Vaults server
+  #   server: "https://vault.example.com"
+  #   roleId: "example-role-id"
+  #   # The name of the secret to use
+  #   accessToken: "main-connect-token"
+  #   # Optional, the field in the secret that contains the access token
+  #   accessTokenField: "token"
 
 # ScopedSecretStores to deploy.
 # Scoped stores are used to limit access to secrets to a specific namespace. This chart 

@@ -15,13 +15,16 @@ spec:
       path: {{ .path | quote }}
       version: "v2"
       auth:
-        tokenSecretRef:
-          name: {{ .accessSecretName | quote }}
-          {{- if .accessTokenField }}
-          key: {{ .accessTokenField | quote }}
-          {{- else }}
-          key: secret-id
-          {{- end }}
+        appRole:
+          path: {{ .appRolePath | default "approle" | quote }}
+          roleId: {{ .roleId | quote }}
+          secretRef:
+            name: {{ .accessSecretName | quote }}
+            {{- if .accessTokenField }}
+            key: {{ .accessTokenField | quote }}
+            {{- else }}
+            key: secret-id
+            {{- end }}
 {{- end }}
 {{- end }}
 {{- end }}{{- end }}
