@@ -44,9 +44,10 @@ scopedStores:
   #   enabled: true
   #   # Vaults server
   #   server: "https://vault.example.com"
+  #   path: "example/location"
   #   accessToken: "main-connect-token"
   #   # Optional, the field in the secret that contains the access token
-  #   accessTokenField: "token"
+  #   accessTokenField: "secret-id"
 
 # Secrets to pull from one of the created stores.
 # These secrets can be used for reflecting secrets to other namespaces or for creating

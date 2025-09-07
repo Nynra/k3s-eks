@@ -20,7 +20,7 @@ spec:
           {{- if .accessTokenField }}
           key: {{ .accessTokenField | quote }}
           {{- else }}
-          key: token
+          key: secret-id
           {{- end }}
 {{- end }}
 {{- end }}
