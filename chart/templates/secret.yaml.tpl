@@ -14,6 +14,8 @@ spec:
   secretStoreRef:
     kind: {{ .storeType | default "SecretStore" | quote }}
     name: {{ .storeName | quote }}
+  {{ if $.Values.allowReflection }}{{ if .reflection }}
+  {{ if .reflection.enabled }}
   target:
     creationPolicy: Owner
     template:
@@ -24,6 +26,8 @@ spec:
           reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: {{ .reflection.allowedNamespaces | quote }}
           reflector.v1.k8s.emberstack.com/reflection-auto-enabled: {{ .reflection.allowAutoReflection | quote }}
           reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: {{ .reflection.autoReflectionNamespaces | quote }}
+  {{ end }}
+  {{ end }}{{ end }}
   data:
     {{- range .fieldMappings}}
     - secretKey: {{ .secretKey | quote }}
