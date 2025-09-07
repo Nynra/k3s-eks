@@ -14,7 +14,7 @@ spec:
   secretStoreRef:
     kind: {{ .storeType | default "SecretStore" | quote }}
     name: {{ .storeName | quote }}
-  {{ if $.Values.externalSecretsallowReflection }}{{ if .reflection }}
+  {{ if $.Values.externalSecrets.allowReflection }}{{ if .reflection }}
   {{ if .reflection.enabled }}
   target:
     creationPolicy: Owner
