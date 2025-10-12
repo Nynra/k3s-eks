@@ -7,6 +7,10 @@ global:
 
 enabled: true
 
+namespace:
+  # If enabled the release namespace will be managed by this chart
+  enabled: false
+
 # ClusterSecretStores to deploy. 
 # It is recommended to either use a scoped store and reflect secrets to other namespaces,
 # deploy scoped stores in each namespace that needs access to the secrets,
