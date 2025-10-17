@@ -21,8 +21,8 @@ spec:
           roleId: {{ .roleId | quote }}
           secretRef:
             name: {{ .accessSecret.secretName | quote }}
-            {{ if .accessTokenField }}
-            key: {{ .accessTokenField | quote }}
+            {{ if .accessSecret.tokenField }}
+            key: {{ .accessSecret.tokenField | quote }}
             {{ else }}
             key: secret-id
             {{ end }}
@@ -53,8 +53,8 @@ spec:
           roleId: {{ .roleId | quote }}
           secretRef:
             name: {{ .accessSecret.secretName | quote }}
-            {{- if .accessTokenField }}
-            key: {{ .accessSecret.reflectedSecret.accessTokenField | quote }}
+            {{- if .accessSecret.tokenField }}
+            key: {{ .accessSecret.tokenField | quote }}
             {{- else }}
             key: secret-id
             {{- end }}

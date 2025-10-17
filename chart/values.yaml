@@ -71,12 +71,11 @@ scopedStores:
   #   path: "example/another-location"
   #   accessSecret:
   #     secretName: "another-connect-token"
+  #     tokenfield: "secret-id"
   #     reflectedSecret:
   #       enabled: true
   #       originNamespace: "external-secrets"
-  #       originSecretName: "another-connect-token"
-  #       # Optional, the field in the secret that contains the access token   
-  #       accessTokenField: "secret-id"
+  #       originSecretName: "another-connect-token"  
 
 # Secrets to pull from one of the created stores.
 # These secrets can be used for reflecting secrets to other namespaces or for creating
