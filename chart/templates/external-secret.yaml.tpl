@@ -1,4 +1,5 @@
-{{- if .Values.enabled }}{{- if .Values.externalSecrets.enabled }}
+{{- if .Values.enabled }}
+{{- if .Values.externalSecrets.enabled }}
 {{- range .Values.externalSecrets.secrets }}
 {{- if .enabled }}
 {{- $remoteSecretName := .remoteName }}
@@ -42,4 +43,5 @@ spec:
 ---
 {{- end }}
 {{- end }}
-{{- end }}{{- end }}
+{{- end }}
+{{- end }}

@@ -11,6 +11,18 @@ namespace:
   # If enabled the release namespace will be managed by this chart
   enabled: false
 
+networkPolicy:
+  enabled: false
+  vaults: []
+  # vaults: 
+  #   # Single IP
+  #   - ip: 192.168.1.15/32
+  #     port: 443
+  #   # Or a range
+  #   - ip: 192.168.1.0/24
+  #     port: 443
+
+
 # ClusterSecretStores to deploy. 
 # It is recommended to either use a scoped store and reflect secrets to other namespaces,
 # deploy scoped stores in each namespace that needs access to the secrets,
@@ -29,10 +41,16 @@ clusterStores:
   #   # Vaults server
   #   server: "https://vault.example.com"
   #   roleId: "example-role-id"
-  #   # The name of the secret to use
-  #   accessToken: "main-connect-token"
-  #   # Optional, the field in the secret that contains the access token
-  #   accessTokenField: "token"
+  #   path: "example/location"
+  #   # The name of the secret to use for accessing the vault
+  #   accessSecret:
+  #     secretName: "main-connect-token"
+  #     reflectedSecret:
+  #       enabled: true
+  #       originNamespace: "external-secrets"
+  #       originSecretName: "main-connect-token"
+  #       # Optional, the field in the secret that contains the access token
+  #       secretField: "token"
 
 # ScopedSecretStores to deploy.
 # Scoped stores are used to limit access to secrets to a specific namespace. This chart 
@@ -49,16 +67,22 @@ scopedStores:
   #   enabled: true
   #   # Vaults server
   #   server: "https://vault.example.com"
-  #   path: "example/location"
-  #   accessSecretName: "main-connect-token"
-  #   # Optional, the field in the secret that contains the access token
-  #   accessTokenField: "secret-id"
+  #   roleId: "another-example-role-id"
+  #   path: "example/another-location"
+  #   accessSecret:
+  #     secretName: "another-connect-token"
+  #     reflectedSecret:
+  #       enabled: true
+  #       originNamespace: "external-secrets"
+  #       originSecretName: "another-connect-token"
+  #       # Optional, the field in the secret that contains the access token   
+  #       accessTokenField: "secret-id"
 
 # Secrets to pull from one of the created stores.
 # These secrets can be used for reflecting secrets to other namespaces or for creating
 # Kubernetes secrets in the namespace where this chart is deployed.
 externalSecrets:
-  enabled: true
+  enabled: false
   allowReflection: false
   secrets: []
   # secrets:
@@ -81,13 +105,13 @@ externalSecrets:
   #     # .... more mappings
   #   # Reflection settings
   #   reflection:
-  #     enabled: false
+  #     enabled: true
   #     # Warning: if allowed namespaces is set to "", all namespaces will be able to reflect the secret.
   #     # This is not recommended as it can lead to security issues.
   #     allowedNamespaces: "example-namespace1,example-namespace2"
   #     # If set to true, the secret will be reflected to all namespaces in the allowedNamespaces list.
   #     # This means a new secret will be created in the target namespace
-  #     allowAutoReflection: false
+  #     allowAutoReflection: true
   #     autoReflectionNamespaces: "example-namespace1,example-namespace2"
 
 # Helm values passed to the external-secrets chart.
@@ -167,7 +191,7 @@ external-secrets:
 # Helm values passed to the reflector chart.
 # https://github.com/emberstack/kubernetes-reflector/blob/main/src/helm/reflector/values.yaml
 reflector: 
-  enabled: false
+  enabled: true
   replicaCount: 1
   cron:
     enabled: false
@@ -178,12 +202,12 @@ reflector:
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
