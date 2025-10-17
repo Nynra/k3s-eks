@@ -45,12 +45,11 @@ clusterStores:
   #   # The name of the secret to use for accessing the vault
   #   accessSecret:
   #     secretName: "main-connect-token"
+  #     tokenField: "secret-id"
   #     reflectedSecret:
   #       enabled: true
   #       originNamespace: "external-secrets"
   #       originSecretName: "main-connect-token"
-  #       # Optional, the field in the secret that contains the access token
-  #       secretField: "token"
 
 # ScopedSecretStores to deploy.
 # Scoped stores are used to limit access to secrets to a specific namespace. This chart 
